@@ -44,7 +44,7 @@ class OpinionLexicon:
         return self.negative_set
     
     def extract_positive_words(self, set_):
-        return [word for word in set_ if word in self.positive_set]
+        return [word for word in set_ if word in self.get_positive_set()]
     
     def extract_negative_words(self, set_):
-        return [word for word in set_ if word in self.negative_set]
+        return [word for word in set_ if word in self.get_negative_set()]
