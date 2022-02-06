@@ -43,6 +43,27 @@ class OpinionLexicon:
             self.negative_set = {word for word in self.get_negative_word()}
         return self.negative_set
     
+    def get_extremum_length(self, maximum=True, positive=True):
+        if maximum:
+            result = -1
+        else:
+            result = 100
+        if(positive):
+            for word in self.get_positive_set():
+                if maximum and len(word) > result:
+                    result = len(word)
+                elif not maximum and len(word) < result:
+                    result = len(word)
+                    # min: a+
+        else:
+            for word in self.get_negative_set():
+                if maximum and len(word) > result:
+                    result = len(word)
+                elif not maximum and len(word) < result:
+                    result = len(word)
+                    # min: ax bs
+        return result
+    
     def extract_positive_words(self, set_):
         return [word for word in set_ if word in self.get_positive_set()]
     
