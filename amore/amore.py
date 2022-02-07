@@ -134,7 +134,7 @@ class Amore:
         if(self.verbose):
             print('Runtime:', timeit.default_timer() - time_begin)
 
-    def split(self, splits, load_file_id=None):
+    def split(self, splits=None, load_file_id=None):
         time_begin = timeit.default_timer()
 
         if(load_file_id is not None):
@@ -143,6 +143,28 @@ class Amore:
             if self.verbose:
                 print('Read:', interim_storage.get_filepath())
                 
+        if(splits is None):
+            splits = []
+            splits.append(Split('AMORE1', 'A', 2001, 5, 10000))
+            splits.append(Split('AMORE1', 'B', 2001, 5,  9900))
+            splits.append(Split('AMORE1', 'B', 2001, 1,   100))
+
+            splits.append(Split('AMORE2', 'A', 2002, 5, 10000))
+            splits.append(Split('AMORE2', 'B', 2002, 5,  9800))
+            splits.append(Split('AMORE2', 'B', 2002, 1,   200))
+
+            splits.append(Split('AMORE3', 'A', 2002, 5, 10000))
+            splits.append(Split('AMORE3', 'B', 2002, 5,  9700))
+            splits.append(Split('AMORE3', 'B', 2002, 1,   300))
+
+            splits.append(Split('AMORE4', 'A', 2002, 5, 10000))
+            splits.append(Split('AMORE4', 'B', 2002, 5,  9600))
+            splits.append(Split('AMORE4', 'B', 2002, 1,   400))
+
+            splits.append(Split('AMORE5', 'A', 2002, 5, 10000))
+            splits.append(Split('AMORE5', 'B', 2002, 5,  9500))
+            splits.append(Split('AMORE5', 'B', 2002, 1,   500))
+        
         for year in self.counter.keys():
             for star in self.counter[year].keys():
                 for tup in self.counter[year][star]:
