@@ -17,15 +17,6 @@ class FileStorage():
     def __init__(self):
         self.add_file('amazon_gz_file', 'movies/movies.txt.gz', note='3.1 GB', web='https://snap.stanford.edu/data/movies.txt.gz')
         self.add_file('opinion-words', 'opinion-words/opinion-lexicon-English.rar', note='positive and negative opinion words, 24 KB', web='http://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar')
-        # test
-#        self.add_file('readme', 'movies/README.test.md', note='a test file', web='https://raw.githubusercontent.com/EML4U/Drift-detector-comparison/main/README.md')
-        # opinion words
-
-        # amazon original
-
-        # for paper
-#        self.add_file('amazon_raw.pickle', 'clustering/amazon_raw.pickle', 'sorted amazon movie reviews data, created by amazon_movie_sorter.py, 7.6 GB')
-#        self.add_file('amazon_bow_50.pickle', 'clustering/amazon_raw.pickle', 'BoW 50 dimensions, created by generator_amazon_movie_embeddings.py, 1.8 GB')
         # add additional files here
     
     def add_file(self, id_, path, note=None, web=None):

@@ -9,12 +9,12 @@ import pickle
 
 class InterimStorage:
     
-    JSON      = 'json'
-    JSON_BZ2  = 'json.bz2'
-    PICKLE    = 'pickle'
-    PICKLE_BZ = 'pickle.bz2'
+    JSON       = 'json'
+    JSON_BZ2   = 'json.bz2'
+    PICKLE     = 'pickle'
+    PICKLE_BZ2 = 'pickle.bz2'
     
-    def __init__(self, id_, type_=PICKLE_BZ, directory=None):
+    def __init__(self, id_, type_=PICKLE_BZ2, directory=None):
         self.id_ = id_
         self.type_ = type_
         
@@ -45,7 +45,7 @@ class InterimStorage:
             data = json.dumps(data)
         elif(self.type_ is self.JSON_BZ2):
             data = json.dumps(data).encode()
-        elif(self.type_ is self.PICKLE or self.PICKLE_BZ):
+        elif(self.type_ is self.PICKLE or self.PICKLE_BZ2):
             data = pickle.dumps(data)
         # Compress/write
         if(self.type_ is self.JSON):
@@ -54,7 +54,7 @@ class InterimStorage:
         elif(self.type_ is self.PICKLE):
             with open(self.get_filepath(), 'wb') as file:
                 file.write(data)
-        elif(self.type_ is self.JSON_BZ2 or self.PICKLE_BZ):
+        elif(self.type_ is self.JSON_BZ2 or self.PICKLE_BZ2):
             with bz2.BZ2File(self.get_filepath(), 'wb') as file:
                 file.write(data)
                 
@@ -68,7 +68,7 @@ class InterimStorage:
         elif(self.type_ is self.PICKLE):
             with open(self.get_filepath(), 'rb') as file:
                 data = file.read()
-        elif(self.type_ is self.JSON_BZ2 or self.PICKLE_BZ):
+        elif(self.type_ is self.JSON_BZ2 or self.PICKLE_BZ2):
             with bz2.BZ2File(self.get_filepath(), 'r') as file:
                 data = file.read()
         # Decode
@@ -76,7 +76,7 @@ class InterimStorage:
             data = json.loads(data)
         elif(self.type_ is self.JSON_BZ2):
             data = json.loads(data)
-        elif(self.type_ is self.PICKLE or self.PICKLE_BZ):
+        elif(self.type_ is self.PICKLE or self.PICKLE_BZ2):
             data = pickle.loads(data)
 
         return data
