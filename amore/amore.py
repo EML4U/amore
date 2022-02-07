@@ -1,3 +1,5 @@
+# Methods to create AMORE dataset
+# Author: Adrian Wilke https://github.com/adibaba
 import errno
 import os
 import sys
@@ -56,7 +58,8 @@ class Amore:
         time_begin = timeit.default_timer()
         
         if self.verbose:
-            print('Reading data')
+            print('Reading data and extracting opinion words')
+            print('This reads the 3 GB files and takes around 6 minutes.')
             print('max_lines:', self.max_lines)
             print('min_year:', self.min_year)
             print('max_year:', self.max_year)
@@ -72,13 +75,7 @@ class Amore:
         opinion_max_neg = self.opinion_lexicon.get_extremum_length(maximum=True, positive=False)
         
         self.reviews = Reviews()
-        r = 0
         for review in reviews_reader:
-            r += 1
-            if(self.verbose and r == 1000):
-                print(r, end=' ... ')
-            if(self.verbose and r % 100000 == 0):
-                print(r, end=' ')
             
             year = review[AmazonReviewsReader.KEY_TIME].year
             if year not in self.years:
@@ -95,8 +92,6 @@ class Amore:
                                       len(self.extract_opinion_words(text, positive=True, min_len=3, max_len=opinion_max_pos)),
                                       len(self.extract_opinion_words(text, positive=False, min_len=3, max_len=opinion_max_neg))
             ))
-        if(self.verbose):
-            print()
         
         if(write_file_id is not None):
             self.reviews.write_review_objects(file_id=write_file_id, verbose=self.verbose)
@@ -107,6 +102,9 @@ class Amore:
     
     def sort(self, load_file_id=None, write_file_id=None):
         time_begin = timeit.default_timer()
+        
+        if self.verbose:
+            print('Sorting year-star sets')
 
         if(load_file_id is not None):
             self.reviews.read_review_objects(file_id=load_file_id, verbose=self.verbose)
@@ -136,6 +134,9 @@ class Amore:
 
     def split(self, splits=None, load_file_id=None):
         time_begin = timeit.default_timer()
+        
+        if self.verbose:
+            print('Splitting into benchmark datasets')
 
         if(load_file_id is not None):
             interim_storage = InterimStorage(id_=load_file_id, type_=InterimStorage.PICKLE_BZ2)
@@ -153,26 +154,48 @@ class Amore:
             splits.append(Split('AMORE2', 'B', 2002, 5,  9800))
             splits.append(Split('AMORE2', 'B', 2002, 1,   200))
 
-            splits.append(Split('AMORE3', 'A', 2002, 5, 10000))
-            splits.append(Split('AMORE3', 'B', 2002, 5,  9700))
-            splits.append(Split('AMORE3', 'B', 2002, 1,   300))
+#            splits.append(Split('AMORE3', 'A', 2002, 5, 10000))
+#            splits.append(Split('AMORE3', 'B', 2002, 5,  9700))
+#            splits.append(Split('AMORE3', 'B', 2002, 1,   300))
 
-            splits.append(Split('AMORE4', 'A', 2002, 5, 10000))
-            splits.append(Split('AMORE4', 'B', 2002, 5,  9600))
-            splits.append(Split('AMORE4', 'B', 2002, 1,   400))
+#            splits.append(Split('AMORE4', 'A', 2002, 5, 10000))
+#            splits.append(Split('AMORE4', 'B', 2002, 5,  9600))
+#            splits.append(Split('AMORE4', 'B', 2002, 1,   400))
 
-            splits.append(Split('AMORE5', 'A', 2002, 5, 10000))
-            splits.append(Split('AMORE5', 'B', 2002, 5,  9500))
-            splits.append(Split('AMORE5', 'B', 2002, 1,   500))
+#            splits.append(Split('AMORE5', 'A', 2002, 5, 10000))
+#            splits.append(Split('AMORE5', 'B', 2002, 5,  9500))
+#            splits.append(Split('AMORE5', 'B', 2002, 1,   500))
         
         for year in self.counter.keys():
             for star in self.counter[year].keys():
                 for tup in self.counter[year][star]:
-                    for split in splits:
-                        for i in split.count_down(year, star):
-                            split.add(tup[0])
-                    
+                    if not self.add_to_split(splits, tup, year, star):
+                        break
+
         if(self.verbose):
             print('Runtime:', timeit.default_timer() - time_begin)
         
         return splits
+    
+    def add_to_split(self, splits, tup, year, star):
+        for split in splits:
+            if(split.is_full() or not split.takes(year, star)):
+                continue
+            split.add(tup[0])
+            return True
+        return False
+
+    def check_splits(self, splits):
+        if self.verbose:
+            print('Checking IDs')
+            
+        ids = set()
+        for split in splits:
+            for id in split.get_review_ids():
+                if id in ids:
+                    print('ID already contained:', id)
+                    return False
+                else:
+                    ids.add(id)
+        print('Number of IDs:', len(ids))
+        return True

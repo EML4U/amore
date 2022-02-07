@@ -1,3 +1,5 @@
+# Manages review objects
+# Author: Adrian Wilke https://github.com/adibaba
 from access.interim_storage import InterimStorage
 from amore.review import Review
 from operator import methodcaller
@@ -14,6 +16,9 @@ class Reviews:
     
     def get_stars(self, year):
         return self.review_objects[year].keys()
+    
+    def get_review_objects(self, year, star):
+        return self.review_objects[year][star]
         
     def add_review(self, year, star, review_obj):
         if not year in self.review_objects.keys():
@@ -65,3 +70,8 @@ class Reviews:
             for star in self.review_objects[year].keys():
                 size += len(self.review_objects[year][star])
         return size
+    
+    def print_overview(self):
+        for year in self.review_objects.keys():
+            for star in self.review_objects[year].keys():
+                print(year, star, len(self.review_objects[year][star]))

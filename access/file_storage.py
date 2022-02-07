@@ -2,7 +2,7 @@
 # By default, a symlink 'data' is used for storing data. (https://en.wikipedia.org/wiki/Symbolic_link)
 # If you want to use another storage directory, create a file 'data-directory.txt' in the project root directory and specify the path there.
 # To add a file, use the constructor below.
-# Author: https://github.com/adibaba
+# Author: Adrian Wilke https://github.com/adibaba
 import os
 import urllib.request
 

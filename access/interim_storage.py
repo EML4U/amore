@@ -1,6 +1,6 @@
 # This class provides basic methods to fastly store data in different formats.
 # By default, Pickle+BZ2 and the system temporary directory are used.
-# Author: https://github.com/adibaba
+# Author: Adrian Wilke https://github.com/adibaba
 import os
 import tempfile
 import json

@@ -6,17 +6,13 @@ class Split:
         self.year   = year
         self.star   = star
         self.number = number
-        
-        self.counter = number
         self.review_ids = []
 
-    def count_down(self, year, star):
-        if(year != self.year or star != self.star):
-            return
+    def is_full(self):
+        return len(self.review_ids) == self.number
 
-        while(self.counter > 0):
-            yield self.counter
-            self.counter -= 1
+    def takes(self, year, star):
+        return self.year == year and self.star == star
     
     def add(self, review_id):
         self.review_ids.append(review_id)
