@@ -59,7 +59,7 @@ class Amore:
         
         if self.verbose:
             print('Reading data and extracting opinion words')
-            print('This reads the 3 GB files and takes around 6 minutes.')
+            print('This reads parts of a 3 GB file and can take longer.')
             print('max_lines:', self.max_lines)
             print('min_year:', self.min_year)
             print('max_year:', self.max_year)
