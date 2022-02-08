@@ -19,6 +19,9 @@ class Amore:
     def __init__(self, max_lines=-1, min_year=2001, max_year=2010, stars=[1,5], verbose=True):
         
         # Configuration
+        self.required_files = ['amazon_gz_file', 'opinion-words', '1997-2012_1_5_OpinionCounts', '1997-2012_1_5_Sorted']
+        
+        # Parameters
         self.max_lines = max_lines
         self.min_year  = min_year
         self.max_year  = max_year
@@ -31,14 +34,22 @@ class Amore:
         self.opinion_lexicon = None
         self.reviews = None
         self.counter = None
-
+        
     def get_missing_files(self, raise_error=False):
         missing_files = []
-        missing_files += self.check_file(self.file_storage.get_filepath('amazon_gz_file'))
-        missing_files += self.check_file(self.file_storage.get_filepath('opinion-words'))
+        for file_id in self.required_files:
+            missing_files += self.check_file(self.file_storage.get_filepath(file_id))
         if(raise_error and len(missing_files) > 0):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), missing_files)
         return missing_files
+
+    def download_missing_files(self):
+        for file_id in self.required_files:
+            if self.check_file(self.file_storage.get_filepath(file_id)):
+                if self.verbose:
+                    print('Downloading:', self.file_storage.get_file_info(file_id, self.file_storage.WEB))
+                    print('', self.file_storage.get_filepath(file_id))
+                self.file_storage.download(file_id)
     
     def check_file(self, file):
         if os.path.isfile(file):
@@ -132,17 +143,18 @@ class Amore:
         if(self.verbose):
             print('Runtime:', timeit.default_timer() - time_begin)
 
-    def split(self, splits=None, load_file_id=None):
+    def split(self, splits=None, load_file_id=None, load_file_directory=None):
         time_begin = timeit.default_timer()
         
         if self.verbose:
             print('Splitting into benchmark datasets')
 
         if(load_file_id is not None):
-            interim_storage = InterimStorage(id_=load_file_id, type_=InterimStorage.PICKLE_BZ2)
+            interim_storage = InterimStorage(id_=load_file_id, type_=InterimStorage.PICKLE_BZ2, directory=load_file_directory)
             self.counter = interim_storage.read()
             if self.verbose:
                 print('Read:', interim_storage.get_filepath())
+
                 
         if(splits is None):
             splits = []
