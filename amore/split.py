@@ -21,4 +21,4 @@ class Split:
         return self.review_ids
     
     def __repr__(self):
-        return f'Review({self.split_name},{self.distribution_name},{len(self.review_ids)})'
+        return f'Split({self.split_name},{self.distribution_name},{len(self.review_ids)})'
