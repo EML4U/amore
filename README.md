@@ -1,0 +1,3 @@
+# AMORE
+
+[statistics](statistics.md)
