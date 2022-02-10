@@ -7,6 +7,12 @@ class Split:
         self.star   = star
         self.number = number
         self.review_ids = []
+    
+    def get_split_name(self):
+        return self.split_name
+    
+    def get_distribution_name(self):
+        return self.distribution_name
 
     def is_full(self):
         return len(self.review_ids) == self.number

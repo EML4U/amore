@@ -11,13 +11,17 @@ import os.path
 reader_min_year = 1997
 reader_max_year = 2012
 reader_stars    = [1, 5]
-amore = Amore(min_year=reader_min_year, max_year=reader_max_year, stars=reader_stars)
+max_lines       = -1
+amore = Amore(min_year=reader_min_year, max_year=reader_max_year, stars=reader_stars, max_lines=max_lines)
 
 # Download required files
 amore.download_missing_files()
 
 # Check, if input files are available
 amore.get_missing_files(raise_error=True)
+
+# Reading data and extracting opinion word counts
+amore.extract_opinion_counts(write_file_id='AMORE-OpinionCollection')
 
 # (1) Reading data and extracting opinion words
 #select_write_file_id = None
@@ -35,12 +39,12 @@ amore.get_missing_files(raise_error=True)
 #split_load_file_id = None
 #split_load_directory = None
 #split_load_file_id = 'AMORE-Sorted'
-split_load_file_id = '1997-2012_1_5_Sorted'
-split_load_directory = os.path.dirname(FileStorage().get_filepath(split_load_file_id))
-splits = amore.split(load_file_id=split_load_file_id, load_file_directory=split_load_directory)
+#  split_load_file_id = '1997-2012_1_5_Sorted'
+#  split_load_directory = os.path.dirname(FileStorage().get_filepath(split_load_file_id))
+#  splits = amore.split(load_file_id=split_load_file_id, load_file_directory=split_load_directory)
 
 # Checking and writing results
-final_write_directory = None
-final_write_file_id = 'AMORE-IDs'
-amore.check_splits(splits)
-print(InterimStorage(id_=final_write_file_id, directory=final_write_directory).write(splits).get_filepath())
+#  final_write_directory = None
+#  final_write_file_id = 'AMORE-IDs'
+#  amore.check_splits(splits)
+#  print(InterimStorage(id_=final_write_file_id, directory=final_write_directory).write(splits).get_filepath())

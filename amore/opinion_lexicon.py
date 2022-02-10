@@ -16,6 +16,10 @@ class OpinionLexicon:
         self.file = file
         self.positive_set = None
         self.negative_set = None
+        self.positive_max_length = -1
+        self.positive_min_length = 1000
+        self.negative_max_length = -1
+        self.negative_min_length = 1000
     
     def get_positive_word(self):
         with RarFile(self.file) as rf:
@@ -44,28 +48,38 @@ class OpinionLexicon:
         return self.negative_set
     
     def get_extremum_length(self, maximum=True, positive=True):
-        if maximum:
-            result = -1
-        else:
-            result = 100
+        if(self.positive_max_length == -1):
+                for word in self.get_positive_set():
+                    if len(word) > self.positive_max_length:
+                        self.positive_max_length = len(word)
+                    elif len(word) < self.positive_min_length:
+                        self.positive_min_length = len(word)
+                        # min: a+
+                for word in self.get_negative_set():
+                    if len(word) > self.negative_max_length:
+                        self.negative_max_length = len(word)
+                    elif len(word) < self.negative_min_length:
+                        self.negative_min_length = len(word)
+                        # min: ax bs
         if(positive):
-            for word in self.get_positive_set():
-                if maximum and len(word) > result:
-                    result = len(word)
-                elif not maximum and len(word) < result:
-                    result = len(word)
-                    # min: a+
+            if(maximum):
+                return self.positive_max_length
+            else:
+                return self.positive_min_length
         else:
-            for word in self.get_negative_set():
-                if maximum and len(word) > result:
-                    result = len(word)
-                elif not maximum and len(word) < result:
-                    result = len(word)
-                    # min: ax bs
-        return result
+            if(maximum):
+                return self.negative_max_length
+            else:
+                return self.negative_min_length
     
     def extract_positive_words(self, set_):
         return [word for word in set_ if word in self.get_positive_set()]
     
     def extract_negative_words(self, set_):
         return [word for word in set_ if word in self.get_negative_set()]
+    
+    def extract_positive_counts(self, counter):
+        return [(word, counter.get(word)) for word in counter if word in self.get_positive_set()]
+    
+    def extract_negative_counts(self, counter):
+        return [(word, counter.get(word)) for word in counter if word in self.get_negative_set()]

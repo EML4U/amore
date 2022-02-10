@@ -10,6 +10,7 @@ from access.file_storage import FileStorage
 from access.interim_storage import InterimStorage
 from amore.amazon_reviews_reader import AmazonReviewsReader
 from amore.opinion_lexicon import OpinionLexicon
+from amore.opinion_collection import OpinionCollection
 from amore.reviews import Reviews
 from amore.review import Review
 from amore.split import Split
@@ -56,7 +57,22 @@ class Amore:
             return []
         else:
             return [file]
-            
+
+    def extract_opinion_counts(self, write_file_id=None):
+        time_begin = timeit.default_timer()
+        print('Reading data and extracting opinion word counts')
+        
+        opinion_collection = OpinionCollection()
+        opinion_collection.collect(max_docs=self.max_lines,
+                                   min_year=self.min_year,
+                                   max_year=self.max_year)
+        filepath = opinion_collection.write(file_id=write_file_id)
+        
+        if(self.verbose):
+            print('Wrote:', filepath)
+            print('Runtime:', timeit.default_timer() - time_begin)
+        
+        
     def extract_opinion_words(self, text, positive=True, min_len=3, max_len=24):
         token_set = set(simple_preprocess(text, min_len=min_len, max_len=max_len))
         if(positive):
@@ -159,12 +175,15 @@ class Amore:
         if(splits is None):
             splits = []
             splits.append(Split('AMORE1', 'A', 2001, 5, 10000))
-            splits.append(Split('AMORE1', 'B', 2001, 5,  9900))
-            splits.append(Split('AMORE1', 'B', 2001, 1,   100))
+            splits.append(Split('AMORE1', 'B', 2001, 5,  9901))
+            splits.append(Split('AMORE1', 'B', 2001, 1,    99))
+            
+            splits.append(Split('TEST-1star', 'A', 2002, 1, 10000))
+            splits.append(Split('TEST-1star', 'B', 2002, 1, 10000))
 
-            splits.append(Split('AMORE2', 'A', 2002, 5, 10000))
-            splits.append(Split('AMORE2', 'B', 2002, 5,  9800))
-            splits.append(Split('AMORE2', 'B', 2002, 1,   200))
+#            splits.append(Split('AMORE2', 'A', 2002, 5, 10000))
+#            splits.append(Split('AMORE2', 'B', 2002, 5,  9800))
+#            splits.append(Split('AMORE2', 'B', 2002, 1,   200))
 
 #            splits.append(Split('AMORE3', 'A', 2002, 5, 10000))
 #            splits.append(Split('AMORE3', 'B', 2002, 5,  9700))
