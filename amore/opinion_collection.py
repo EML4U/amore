@@ -34,6 +34,7 @@ class OpinionCollection:
         self.results = []
         self.dictionary = {}
         
+    # Collects positive and negative words of summaries and texts
     def collect(self, amazon_movie_reviews_file=None, max_docs=-1, min_year=-1, max_year=-1):
         if amazon_movie_reviews_file is None:
             amazon_movie_reviews_file = FileStorage().get_filepath('amazon_gz_file')
@@ -59,18 +60,18 @@ class OpinionCollection:
     def get_results(self):
         return self.results
     
-    def write(self, file_id=None, directory=None):
+    def write(self, file_id=None, directory=None, type_=InterimStorage.JSON_GZ):
         if file_id is None:
             file_id = self.FILE_ID
-        return InterimStorage(file_id, directory=directory).write(self.results).get_filepath()
+        return InterimStorage(file_id, directory=directory, type_=type_).write(self.results).get_filepath()
     
-    def read(self, file_id=None, directory=None):
+    def read(self, file_id=None, directory=None, type_=InterimStorage.JSON_GZ):
         if file_id is None:
             file_id = self.FILE_ID
-        self.results = InterimStorage(id_=file_id, directory=directory).read()
+        self.results = InterimStorage(id_=file_id, directory=directory, type_=type_).read()
         return self
     
-    # To dictionary
+    # To dictionary for access with get() method
     
     def create_dictionary(self, clear_results=True):
         if(len(self.results) > 0):
@@ -114,13 +115,13 @@ class OpinionCollection:
     def get_positive_minus_negative(self):
         return self.pos_neg
 
-    def write_counts(self, file_id=None, directory=None):
+    def write_counts(self, file_id=None, directory=None, type_=InterimStorage.JSON_GZ):
         if file_id is None:
             file_id = self.FILE_ID_COUNTS
-        return InterimStorage(file_id, directory=directory).write(self.pos_neg).get_filepath()
+        return InterimStorage(file_id, directory=directory, type_=type_).write(self.pos_neg).get_filepath()
     
-    def read_counts(self, file_id=None, directory=None):
+    def read_counts(self, file_id=None, directory=None, type_=InterimStorage.JSON_GZ):
         if file_id is None:
             file_id = self.FILE_ID_COUNTS
-        self.pos_neg = InterimStorage(id_=file_id, directory=directory).read()
+        self.pos_neg = InterimStorage(id_=file_id, directory=directory, type_=type_).read()
         return self

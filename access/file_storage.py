@@ -23,14 +23,18 @@ class FileStorage():
                       'opinion-words/opinion-lexicon-English.rar',
                       note='positive and negative opinion words, 24 KB',
                       web='http://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar')
-        self.add_file('1997-2012_1_5_OpinionCounts',
-                      'benchmark/1997-2012_1_5_OpinionCounts.pickle.bz2',
-                      note='18 MB',
-                      web='https://hobbitdata.informatik.uni-leipzig.de/EML4U/2022-02-08-Benchmark/1997-2012_1_5_OpinionCounts.pickle.bz2')
-        self.add_file('1997-2012_1_5_Sorted',
-                      'benchmark/1997-2012_1_5_Sorted.pickle.bz2',
-                      note='19 MB',
-                      web='https://hobbitdata.informatik.uni-leipzig.de/EML4U/2022-02-08-Benchmark/1997-2012_1_5_Sorted.pickle.bz2')
+        self.add_file('AMORE-NumbersYearsStars',
+                      'benchmark/AMORE-NumbersYearsStars.json.gz',
+                      note='25 MB')
+        self.add_file('AMORE-TextDuplicates',
+                      'AMORE-TextDuplicates.json.gz',
+                      note='18 MB',)
+        self.add_file('AMORE-OpinionCollection',
+                      'AMORE-OpinionCollection.json.gz',
+                      note='306 MB',)
+        self.add_file('AMORE-OpinionCounts',
+                      'AMORE-OpinionCounts.json.gz',
+                      note='30 MB',)
         # add additional files here
     
     def add_file(self, id_, path, note=None, web=None):
