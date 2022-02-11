@@ -10,18 +10,22 @@ import os.path
 # Possible values: [1997-2012], [1,2,4,5]
 reader_min_year = 1997
 reader_max_year = 2012
-reader_stars    = [1, 5]
+reader_stars    = [1, 5]                                 # TODO: also 2 4
 max_lines       = -1
 amore = Amore(min_year=reader_min_year, max_year=reader_max_year, stars=reader_stars, max_lines=max_lines)
 
 # Download required files
-amore.download_missing_files()
+amore.download_missing_files()                                              # TODO: Check which files are required
 
 # Check, if input files are available
 amore.get_missing_files(raise_error=True)
 
 # Reading data and extracting opinion word counts
-amore.extract_opinion_counts(write_file_id='AMORE-OpinionCollection')
+#amore.extract_opinion_counts(write_file_id='AMORE-OpinionCollection')
+
+# Counting positive and negative words
+amore.count_posneg(load_file_id='AMORE-OpinionCollection', write_file_id='AMORE-OpinionCounts')
+
 
 # (1) Reading data and extracting opinion words
 #select_write_file_id = None

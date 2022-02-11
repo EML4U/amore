@@ -32,6 +32,7 @@ class Amore:
         # Internal
         self.years = range(self.min_year, self.max_year+1)
         self.file_storage = FileStorage()
+        self.opinion_collection = None
         self.opinion_lexicon = None
         self.reviews = None
         self.counter = None
@@ -58,20 +59,43 @@ class Amore:
         else:
             return [file]
 
+# Opinion words
+        
     def extract_opinion_counts(self, write_file_id=None):
         time_begin = timeit.default_timer()
         print('Reading data and extracting opinion word counts')
         
-        opinion_collection = OpinionCollection()
-        opinion_collection.collect(max_docs=self.max_lines,
+        self.opinion_collection = OpinionCollection()
+        self.opinion_collection.collect(max_docs=self.max_lines,
                                    min_year=self.min_year,
                                    max_year=self.max_year)
-        filepath = opinion_collection.write(file_id=write_file_id)
+
+        if(write_file_id is not None):
+            filepath = self.opinion_collection.write(file_id=write_file_id)
+            if(self.verbose):
+                print('Wrote:', filepath)
         
         if(self.verbose):
-            print('Wrote:', filepath)
             print('Runtime:', timeit.default_timer() - time_begin)
+
+    def count_posneg(self, load_file_id=None, write_file_id=None):
+        time_begin = timeit.default_timer()
+        print('Counting positive and negative words')
         
+        if(load_file_id is not None):
+            self.opinion_collection = OpinionCollection().read(file_id=load_file_id)
+            
+        self.opinion_collection.create_positive_minus_negative()
+
+        if(write_file_id is not None):
+            filepath = self.opinion_collection.write_counts(file_id=write_file_id)
+            if(self.verbose):
+                print('Wrote:', filepath)
+        
+        if(self.verbose):
+            print('Runtime:', timeit.default_timer() - time_begin)
+
+# Reviews
         
     def extract_opinion_words(self, text, positive=True, min_len=3, max_len=24):
         token_set = set(simple_preprocess(text, min_len=min_len, max_len=max_len))

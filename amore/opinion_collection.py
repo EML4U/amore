@@ -1,3 +1,9 @@
+# Counts negarive and positive words of fields 'summary' and 'text'.
+# Author: Adrian Wilke https://github.com/adibaba
+#
+# Results format: [(line-number, [(summary-negative-word, count)], [(summary-positive-word, count)], [(text-negative-word, count)], [(text-positive-word, count)])]
+# e.g. (6, [('pointless', 1)], [('pretty', 1)], [('badly', 1), ('revenge', 1)], [('holy', 1), ('good', 1)])
+# e.g. (64, [('loss', 1)], [], [('lost', 1), ('loss', 1), ('pain', 1)], [('helpful', 1), ('loved', 2), ('faith', 2), ('stronger', 1), ('love', 1), ('loving', 1)])
 from amore.opinion_lexicon import OpinionLexicon
 from amore.amazon_reviews_reader import AmazonReviewsReader
 from access.file_storage import FileStorage
@@ -7,7 +13,8 @@ from collections import Counter
 
 class OpinionCollection:
     
-    FILE_ID = 'OpinionCollection'
+    FILE_ID        = 'AMORE-OpinionCollection'
+    FILE_ID_COUNTS = 'AMORE-OpinionCounts'
     
     KEY_NUMBER = 0
     KEY_NEGATIVE_SUMMARY = 1
@@ -25,6 +32,7 @@ class OpinionCollection:
         self.max_len = max(self.opinion_lexicon.get_extremum_length(maximum=True,  positive=True),
                            self.opinion_lexicon.get_extremum_length(maximum=True,  positive=False))
         self.results = []
+        self.dictionary = {}
         
     def collect(self, amazon_movie_reviews_file=None, max_docs=-1, min_year=-1, max_year=-1):
         if amazon_movie_reviews_file is None:
@@ -61,4 +69,58 @@ class OpinionCollection:
             file_id = self.FILE_ID
         self.results = InterimStorage(id_=file_id, directory=directory).read()
         return self
-        
+    
+    # To dictionary
+    
+    def create_dictionary(self, clear_results=True):
+        if(len(self.results) > 0):
+            self.dictionary = {}
+            for item in self.results:
+                self.dictionary[item[self.KEY_NUMBER]] = item
+            if(clear_results):
+                self.results = []
+        return self
+    
+    def get(self, number):
+        return self.dictionary[number]
+    
+    # Create pos minuse neg
+    
+    def create_positive_minus_negative(self):
+        self.pos_neg = {}
+        if(len(self.results) > 0):
+            for item in self.results:
+                tup = self.create_positive_minus_negative_tuple(item)
+                self.pos_neg[tup[0]] = (tup[1], tup[2])
+        elif(len(self.dictionary) > 0):
+            for item in self.dictionary.values():
+                tup = self.create_positive_minus_negative_tuple(item)
+                self.pos_neg[tup[0]] = (tup[1], tup[2])
+        else:
+            print('Error creating pos/neg: No data in results/dictionary')
+        return self
+
+    def create_positive_minus_negative_tuple(self, tup):
+        return (tup[self.KEY_NUMBER],
+                sum(c for w, c in tup[self.KEY_POSITIVE_SUMMARY]) +
+                sum(c for w, c in tup[self.KEY_POSITIVE_TEXT]) -
+                sum(c for w, c in tup[self.KEY_NEGATIVE_SUMMARY]) -
+                sum(c for w, c in tup[self.KEY_NEGATIVE_TEXT]),
+                
+                len({k[0] for k in tup[self.KEY_POSITIVE_SUMMARY]}.union({k[0] for k in tup[self.KEY_POSITIVE_TEXT]})) -
+                len({k[0] for k in tup[self.KEY_NEGATIVE_SUMMARY]}.union({k[0] for k in tup[self.KEY_NEGATIVE_TEXT]}))
+               )
+    
+    def get_positive_minus_negative(self):
+        return self.pos_neg
+
+    def write_counts(self, file_id=None, directory=None):
+        if file_id is None:
+            file_id = self.FILE_ID_COUNTS
+        return InterimStorage(file_id, directory=directory).write(self.pos_neg).get_filepath()
+    
+    def read_counts(self, file_id=None, directory=None):
+        if file_id is None:
+            file_id = self.FILE_ID_COUNTS
+        self.pos_neg = InterimStorage(id_=file_id, directory=directory).read()
+        return self
