@@ -84,7 +84,7 @@ class OpinionCollection:
     def get(self, number):
         return self.dictionary[number]
     
-    # Create pos minuse neg
+    # Create pos minus neg
     
     def create_positive_minus_negative(self):
         self.pos_neg = {}
