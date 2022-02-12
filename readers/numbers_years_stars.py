@@ -30,13 +30,12 @@ class NumbersYearsStars:
     def get_by_year_star(self, years=[], stars=[]):
         results = {}
         for t in self.get_data():
-            if not years or t[self.KEY_YEAR] in years:
-                if not stars or t[self.KEY_STAR] in stars:
-                    if t[self.KEY_YEAR] not in results.keys():
-                        results[t[self.KEY_YEAR]] = {}
-                    if t[self.KEY_STAR] not in results.keys():
+            if t[self.KEY_YEAR] in years or not years:
+                if t[self.KEY_YEAR] not in results.keys():
+                    results[t[self.KEY_YEAR]] = {}
+                if t[self.KEY_STAR] in stars or not stars:
+                    if t[self.KEY_STAR] not in results[t[self.KEY_YEAR]].keys():
                         results[t[self.KEY_YEAR]][t[self.KEY_STAR]] = []
-                        
                     results[t[self.KEY_YEAR]][t[self.KEY_STAR]].append(t)
         return results
 

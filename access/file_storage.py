@@ -27,13 +27,13 @@ class FileStorage():
                       'benchmark/AMORE-NumbersYearsStars.json.gz',
                       note='25 MB')
         self.add_file('AMORE-TextDuplicates',
-                      'AMORE-TextDuplicates.json.gz',
+                      'benchmark/AMORE-TextDuplicates.json.gz',
                       note='18 MB',)
         self.add_file('AMORE-OpinionCollection',
-                      'AMORE-OpinionCollection.json.gz',
+                      'benchmark/AMORE-OpinionCollection.json.gz',
                       note='306 MB',)
         self.add_file('AMORE-OpinionCounts',
-                      'AMORE-OpinionCounts.json.gz',
+                      'benchmark/AMORE-OpinionCounts.json.gz',
                       note='30 MB',)
         # add additional files here
     
@@ -47,10 +47,13 @@ class FileStorage():
         return self.files
         
     def get_file_info(self, id_, key):
-            return self.files[id_][key]
+        return self.files[id_][key]
         
     def get_filepath(self, id_):
-            return os.path.join(self.get_storage_directory(), *(self.files[id_][self.PATH]).split('/'))
+        return os.path.join(self.get_storage_directory(), *(self.files[id_][self.PATH]).split('/'))
+        
+    def get_filedir(self, id_):
+        return os.path.dirname(self.get_filepath(id_))
     
     def get_storage_directory(self):
         if(os.path.isfile(self.get_config_file_path())):
