@@ -47,7 +47,6 @@ class AmazonPickleReader:
         if(self.data_bow50 is None):
             with open(os.path.join(self.data_directory, self.filename_bow50), 'rb') as handle:
                 self.data_bow50 = pickle.load(handle)
-        print('reading complete')                                                                           # TODO
         return self.data_bow50
 
     def get_text(self, raw_id, metadata=False):

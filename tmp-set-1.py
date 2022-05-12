@@ -37,6 +37,10 @@ print('pos: ', len(pos))
 
 
 
+# TODO: notebook killed process. probably not enough memory
+
+
+
 # Extra: Read an example (with mapping item ID to raw ID)
 emb_base = {}
 emb_neg  = {}
