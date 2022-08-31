@@ -7,4 +7,4 @@ if ! test -f "README.md"; then
     exit
 fi
 
-rsync -aP --exclude={'data','__pycache__','.*'} eml4u@eml4u-experiment.cs.upb.de:/home/eml4u/EML4U/notebooks/BenchTest/* ./
+rsync -aP --exclude={'data','__pycache__','.*'} eml4u@eml4u-experiment.cs.upb.de:/home/eml4u/EML4U/notebooks/amore/* ./
