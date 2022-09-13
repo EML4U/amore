@@ -35,6 +35,9 @@ class FileStorage():
         self.add_file('AMORE-OpinionCounts',
                       'benchmark/AMORE-OpinionCounts.json.gz',
                       note='30 MB',)
+        self.add_file('deduplicated',
+                      'benchmark/deduplicated.pickle.bz2',
+                      note='5 MB',)
         # add additional files here
     
     def add_file(self, id_, path, note=None, web=None):

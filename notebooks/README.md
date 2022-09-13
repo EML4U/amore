@@ -21,7 +21,8 @@
   Collects duplicates
 - filtering-deduplication.ipynb  
   Reads opinion-filtered.pickle.bz2 and writes deduplicated.pickle.bz2 and non-deduplicated.pickle.bz2  
-  Uses TextDuplicates and AMORE-TextDuplicates.json.gz
+  Uses TextDuplicates and AMORE-TextDuplicates.json.gz  
+  Writes deduplicated.pickle.bz2
 - count_original_amazon.ipynb  
   Creates table with year/star overview
 - extract_year_star.ipynb  
