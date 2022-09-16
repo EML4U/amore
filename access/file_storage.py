@@ -23,6 +23,7 @@ class FileStorage():
                       'opinion-words/opinion-lexicon-English.rar',
                       note='positive and negative opinion words, 24 KB',
                       web='http://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar')
+        
         self.add_file('AMORE-NumbersYearsStars',
                       'benchmark/AMORE-NumbersYearsStars.json.gz',
                       note='25 MB')
@@ -38,6 +39,24 @@ class FileStorage():
         self.add_file('deduplicated',
                       'benchmark/deduplicated.pickle.bz2',
                       note='5 MB',)
+
+        self.add_file('AMORE-CountVec-DocTermMatrix',
+                      'benchmark/CountVectorizer-DocTermMatrix.pickle.bz2',
+                      note='103 MB, (1203682, 918065), scipy.sparse.csr.csr_matrix',
+                      web='https://hobbitdata.informatik.uni-leipzig.de/EML4U/2022-09-16-AMORE-CountVectorizer/CountVectorizer-DocTermMatrix.pickle.bz2')
+        self.add_file('AMORE-CountVec-Object',
+                      'benchmark/CountVectorizer-object.pickle.bz2',
+                      note='7.3 MB, sklearn.feature_extraction.text.CountVectorizer',
+                      web='https://hobbitdata.informatik.uni-leipzig.de/EML4U/2022-09-16-AMORE-CountVectorizer/CountVectorizer-object.pickle.bz2')
+        self.add_file('AMORE-CountVec-VecidRevno',
+                      'benchmark/CountVectorizer-VecidRevno.pickle.bz2',
+                      note='4.2 MB, vectorizer ID to review no: 1203682 items',
+                      web='https://hobbitdata.informatik.uni-leipzig.de/EML4U/2022-09-16-AMORE-CountVectorizer/CountVectorizer-VecidRevno.pickle.bz2')
+        self.add_file('AMORE-CountVec-Vocabulary',
+                      'benchmark/CountVectorizer-Vocabulary.pickle.bz2',
+                      note='7.3 MB, Number of features: 918065',
+                      web='https://hobbitdata.informatik.uni-leipzig.de/EML4U/2022-09-16-AMORE-CountVectorizer/CountVectorizer-Vocabulary.pickle.bz2')
+        
         # add additional files here
     
     def add_file(self, id_, path, note=None, web=None):
