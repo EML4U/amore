@@ -19,7 +19,8 @@ The goal of drift explanation approaches is to detect drift between the two sets
 
 ## Misc
 
-[Data statistics](statistics.md)
+- [Data statistics](statistics.md)
+- [Data download](data.md)
 
 ## Data files and Python code
 
