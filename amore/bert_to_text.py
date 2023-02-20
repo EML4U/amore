@@ -30,3 +30,11 @@ class BertToText:
             del texts
             del keys
         return imp
+    
+    
+# test
+#b = BertToText('/home/eml4u/EML4U/data/symlink-target/clustering/amazon_all.pickle')
+b = BertToText('/home/eml4u/EML4U/data/symlink-target/clustering/amazon_raw.pickle')
+b.toggle_multi_fast
+print(b.get_raw_text(10000))
+    

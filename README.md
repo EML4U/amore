@@ -1,7 +1,8 @@
-# AMORE: Drift benchmark datasets
+# AMORE: Document-based drift benchmark datasets
 
-AMORE (Amazon Movie Reviews) is a collection of benchmark datasets to compare drift explanation approaches.
-Each dataset consists of two sets of unlabeled texts, which are either positive (good rated) or negative (bad rated) movie reviews.
+AMORE (Amazon Movie Reviews) is a collection of document-based benchmark datasets to compare drift explanation approaches.
+Each benchmark dataset consists of two sets of unlabeled texts.
+The single texts are either positive (good rated) or negative (bad rated) movie reviews.
 The goal of drift explanation approaches is to detect drift between the two sets and explain why drift was detected.
 
 ## AMORE datasets
@@ -11,11 +12,6 @@ The goal of drift explanation approaches is to detect drift between the two sets
   - Set B: 10,000 reviews (from 2005), 90% negative and 10% positive.
   - Task: Detect the texts in B which contain drift and explain the drift.
   - Note: Drift is mainly based on 3 to 4 words, which only occur in the positive reviews.
-- **AMORE.2**
-  - Set A: 10,000 negative reviews (from 2006 to 2007).
-  - Set B: 10,000 reviews (from 2008), 90% negative and 10% positive.
-  - Task: Detect the texts in B which contain drift and explain the drift.
-  - Note: Drift is mainly based on 10 words. Negative reviews contain 1 of those, positive contain 5 to 9.
 
 ## Misc
 
@@ -40,3 +36,7 @@ The goal of drift explanation approaches is to detect drift between the two sets
     - Example: [1, 2007, 3]
     - Size: 7,911,684 entries
     - Code: [numbers_years_stars.py](readers/numbers_years_stars.py)
+
+## Acknowledgments
+
+This  work  has  been  supported  by  the  German  FederalMinistry of Education and Research (BMBF) within the project [EML4U](https://eml4u.github.io/) under the grant no 01IS19080B.
